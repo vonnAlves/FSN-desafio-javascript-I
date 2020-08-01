@@ -37,19 +37,20 @@ const alunosDaEscola=[
 }];
 
 //adiciona aluno no sistema escolar, e retorna um feedback caso aluno seja inserido corretamente;
-const adicionarAluno = Nome => {
-    let novoAluno = {
-       Nome: Nome,
-       Notas:[],
-       Cursos:[],
-       Faltas:0
-    };
-console.log("Aluno:" + Nome + " Cadastrado com sucesso!");
-console.log("")
-
-alunosDaEscola.push(novoAluno);
-};
-//adicionarAluno("Carlos Alberto");
+const adicionarAluno = nome => {
+    if(typeof nome === "string"){
+        let novoAluno = {
+            Nome: nome,
+            Notas:[],
+            Cursos:[],
+            Faltas:0
+        };
+        console.log("Aluno:" + nome + " Cadastrado com sucesso!");
+        alunosDaEscola.push(novoAluno);
+    }else{
+        console.log("Não foi possivél cadastrar aluno!")
+    }
+}
 
 //percorre o array e imprime todos os alunos contidos em um formato amigável;
 const listarAlunos = ()=> {
@@ -64,6 +65,7 @@ const listarAlunos = ()=> {
         console.log("Faltas:" + aluno.Faltas);
     })
 }
+
 //recebe um nome de um aluno como parametro e verifica se o mesmo esta cadastrado no sistema;
 //emite um feedback, caso esteja cadastrado ou não;
 const buscarAluno = nome =>{
@@ -82,21 +84,18 @@ const buscarAluno = nome =>{
         console.log("-".repeat(30));
     })
 }
-//buscarAluno("Carlos");
 
 //recebe como parametro um aluno e o curso desejado, se aluno estiver cadastrado,sera matriculado no curso com sucesso;
-//caso não esteja cadastrado emitira um feedback, avisando que aluno não esta cadastrado;
+//caso não esteja cadastrado emitirá um feedback, avisando que aluno não esta cadastrado;
 const matricularAluno = (aluno, curso) =>{
     let alunoCadastrado = alunosDaEscola.filter(listaAluno => listaAluno.Nome == aluno.Nome)
     if(alunoCadastrado.length > 0){
         aluno.Cursos.push({NomeDoCurso:curso, dataMatricula:new Date()});
         console.log("Aluno:" + aluno.Nome + " " + "foi Matrículado no curso:" + curso);
     }else{
-       console.log("não foi possivel realizar matricula, aluno nao cadastrado");
+       console.log("não foi possivel realizar matricula, aluno não cadastrado");
     }
-
 }
-//matricularAluno(alunosDaEscola[1],"Web-Fullstack");
 
 //recebe um objeto aluno como parametro no qual deseja aplicar falta; e incrementa +1 falta para o aluno;
 const aplicarFalta = aluno =>{
@@ -107,7 +106,6 @@ const aplicarFalta = aluno =>{
         console.log("Não Foi possivel aplicar falta, aluno nao esta matriculado!")
     }
 }
-//aplicarFalta(alunosDaEscola[1])
 
 //aplica nota para um aluno devidamente matriculado em um curso;
 const aplicarNota = (aluno, nota) =>{ 
@@ -118,9 +116,8 @@ const aplicarNota = (aluno, nota) =>{
         console.log("Não foi possivel aplicar nota, aluno não esta cadastrado no sistema!")
     }
 }
-//aplicarNota(alunosDaEscola[1],10)
 
-//aprova aluno, se o mesmo estiver cadastrado no sistema e possuir media de notas maior ou igual 7 e faltas menor ou igual 3;
+//aprova aluno, se o mesmo estiver matriculado no sistema e possuir media de notas maior ou igual 7 e faltas menor ou igual 3;
 const aprovarAluno = aluno =>{
     if(aluno.Cursos[0]){
         const mediaAluno = aluno.Notas.reduce((soma, nota) => soma + nota) / aluno.Notas.length
@@ -137,4 +134,5 @@ const aprovarAluno = aluno =>{
         console.log("Aluno Não Esta Matriculado no sistema!")
     }
 }
-//aprovarAluno(alunosDaEscola[1])
+
+
